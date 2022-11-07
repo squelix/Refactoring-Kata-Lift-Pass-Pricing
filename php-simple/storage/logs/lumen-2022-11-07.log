@@ -1,0 +1,18 @@
+[2022-11-07 14:31:44] local.ERROR:  {"exception":"[object] (Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException(code: 0):  at /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php:235)
+[stacktrace]
+#0 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(175): Laravel\\Lumen\\Application->handleDispatcherResponse(Array)
+#1 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(431): Laravel\\Lumen\\Application->Laravel\\Lumen\\Concerns\\{closure}(Object(Laravel\\Lumen\\Http\\Request))
+#2 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(177): Laravel\\Lumen\\Application->sendThroughPipeline(Array, Object(Closure))
+#3 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(112): Laravel\\Lumen\\Application->dispatch(NULL)
+#4 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/bootstrap/index.php(29): Laravel\\Lumen\\Application->run()
+#5 {main}
+"} 
+[2022-11-07 14:31:52] local.ERROR:  {"exception":"[object] (Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException(code: 0):  at /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php:235)
+[stacktrace]
+#0 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(175): Laravel\\Lumen\\Application->handleDispatcherResponse(Array)
+#1 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(431): Laravel\\Lumen\\Application->Laravel\\Lumen\\Concerns\\{closure}(Object(Laravel\\Lumen\\Http\\Request))
+#2 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(177): Laravel\\Lumen\\Application->sendThroughPipeline(Array, Object(Closure))
+#3 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(112): Laravel\\Lumen\\Application->dispatch(NULL)
+#4 /Users/mickael/Workspace/perso/Refactoring-Kata-Lift-Pass-Pricing/php-simple/bootstrap/index.php(29): Laravel\\Lumen\\Application->run()
+#5 {main}
+"} 
