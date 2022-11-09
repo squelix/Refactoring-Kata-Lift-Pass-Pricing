@@ -4,8 +4,8 @@
   "description": "Lift-Pass-Pricing refactoring kata",
   "main": "index.js",
   "scripts": {
-    "start": "node_modules/.bin/ts-node .",
-    "test": "node_modules/.bin/mocha --require ts-node/register --recursive test/**/*.spec.ts",
+    "start": "ts-node-dev .",
+    "test": "mocha --require ts-node/register --watch --watch-files test/**/*.spec.ts --recursive test/**/*.spec.ts",
     "compile": "tsc"
   },
   "license": "ISC",
@@ -22,6 +22,7 @@
     "mocha": "^6.1.2",
     "supertest": "^4.0.2",
     "ts-node": "^8.0.3",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.4"
   }
 }

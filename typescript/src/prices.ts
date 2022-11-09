@@ -1,87 +1,30 @@
-import express from "express";
-import mysql from "mysql2/promise"
+import express from 'express';
+import mysql from 'mysql2/promise';
 
-async function createApp() {
-    const app = express()
+import { IPriceCalculator } from './calculator/IPriceCalculator';
+import { PriceCalculator } from './calculator/PriceCalculator';
+import { IPriceController } from './controllers/IPrice.controller';
+import { PriceController } from './controllers/Price.controller';
+import { BasePrice } from './repositories/basePrice/BasePrice.repository';
+import { IBasePrice } from './repositories/basePrice/IBasePrice.repository';
+import { Holidays } from './repositories/holidays/Holidays.repository';
+import { IHolidays } from './repositories/holidays/IHolidays.repository';
 
-    let connectionOptions = {host: 'localhost', user: 'root', database: 'lift_pass', password: 'mysql'}
-    const connection = await mysql.createConnection(connectionOptions)
+const createApp = async () => {
+    const app = express();
 
-    app.put('/prices', async (req, res) => {
-        const liftPassCost = req.query.cost
-        const liftPassType = req.query.type
-        const [rows, fields] = await connection.query(
-            'INSERT INTO `base_price` (type, cost) VALUES (?, ?) ' +
-            'ON DUPLICATE KEY UPDATE cost = ?',
-            [liftPassType, liftPassCost, liftPassCost]);
+    const connectionOptions = { host: 'localhost', user: 'root', database: 'lift_pass', password: 'mysql', port: 3307 };
+    const connection: mysql.Connection = await mysql.createConnection(connectionOptions);
 
-        res.json()
-    })
-    app.get('/prices', async (req, res) => {
-        const result = (await connection.query(
-            'SELECT cost FROM `base_price` ' +
-            'WHERE `type` = ? ',
-            [req.query.type]))[0][0]
+    const basePriceRepo: IBasePrice = new BasePrice(connection);
+    const holidaysRepo: IHolidays = new Holidays(connection);
+    const priceCalculator: IPriceCalculator = new PriceCalculator(basePriceRepo, holidaysRepo);
+    const priceController: IPriceController = new PriceController(priceCalculator, basePriceRepo);
 
-        if (req.query.age as any < 6) {
-            res.json({cost: 0})
-        } else {
-            if (req.query.type !== 'night') {
-                const holidays = (await connection.query(
-                    'SELECT * FROM `holidays`'
-                ))[0] as mysql.RowDataPacket[];
+    app.put('/prices', priceController.putPrice);
+    app.get('/prices', priceController.getPrice);
 
-                let isHoliday;
-                let reduction = 0
-                for (let row of holidays) {
-                    let holiday = row.holiday
-                    if (req.query.date) {
-                        let d = new Date(req.query.date as string)
-                        if (d.getFullYear() === holiday.getFullYear()
-                            && d.getMonth() === holiday.getMonth()
-                            && d.getDate() === holiday.getDate()) {
-
-                            isHoliday = true
-                        }
-                    }
-
-                }
-
-                if (!isHoliday && new Date(req.query.date as string).getDay() === 1) {
-                    reduction = 35
-                }
-
-                // TODO apply reduction for others
-                if (req.query.age as any < 15) {
-                    res.json({cost: Math.ceil(result.cost * .7)})
-                } else {
-                    if (req.query.age === undefined) {
-                        let cost = result.cost * (1 - reduction / 100)
-                        res.json({cost: Math.ceil(cost)})
-                    } else {
-                        if (req.query.age as any > 64) {
-                            let cost = result.cost * .75 * (1 - reduction / 100)
-                            res.json({cost: Math.ceil(cost)})
-                        } else {
-                            let cost = result.cost * (1 - reduction / 100)
-                            res.json({cost: Math.ceil(cost)})
-                        }
-                    }
-                }
-            } else {
-                if (req.query.age as any >= 6) {
-                    if (req.query.age as any > 64) {
-                        res.json({cost: Math.ceil(result.cost * .4)})
-                    } else {
-                        res.json(result)
-                    }
-                } else {
-                    res.json({cost: 0})
-                }
-            }
-        }
-    })
-    return {app, connection}
+    return { app, connection }
 }
 
-export {createApp}
+export { createApp }

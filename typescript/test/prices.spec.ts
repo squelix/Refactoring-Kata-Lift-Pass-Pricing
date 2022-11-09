@@ -1,13 +1,13 @@
-import {createApp} from "../src/prices"
-import request from 'supertest'
-import {expect} from 'chai';
+import { expect } from 'chai';
+import request from 'supertest';
+
+import { createApp } from '../src/prices';
 
 describe('prices', () => {
-
-    let app, connection
+    let app, connection;
 
     beforeEach(async () => {
-        ({app, connection} = await createApp())
+        ({ app, connection } = await createApp())
         await request(app).put('/prices?type=1jour&cost=35').expect(200)
         await request(app).put('/prices?type=night&cost=19').expect(200)
     });
@@ -17,8 +17,7 @@ describe('prices', () => {
     });
 
     it('default cost', async () => {
-        const {body} = await request(app)
-            .get('/prices?type=1jour')
+        const { body } = await request(app).get('/prices?type=1jour')
 
         expect(body.cost).equal(35)
     });
@@ -34,16 +33,14 @@ describe('prices', () => {
     ]
         .forEach(({age, expectedCost}) => {
             it('works for all ages', async () => {
-                const {body} = await request(app)
-                    .get(`/prices?type=1jour&age=${age}`)
+                const { body } = await request(app).get(`/prices?type=1jour&age=${age}`)
 
                 expect(body.cost).equal(expectedCost)
             });
         });
 
     xit('default night cost', async () => {
-        const {body} = await request(app)
-            .get('/prices?type=night')
+        const { body } = await request(app).get('/prices?type=night')
 
         expect(body.cost).equal(19)
     });
@@ -57,8 +54,7 @@ describe('prices', () => {
     ]
         .forEach(({age, expectedCost}) => {
             it('works for night passes', async () => {
-                const {body} = await request(app)
-                    .get(`/prices?type=night&age=${age}`)
+                const { body } = await request(app).get(`/prices?type=night&age=${age}`)
 
                 expect(body.cost).equal(expectedCost)
             });
@@ -72,8 +68,7 @@ describe('prices', () => {
     ]
         .forEach(({age, expectedCost, date}) => {
             it('works for monday deals', async () => {
-                const {body} = await request(app)
-                    .get(`/prices?type=1jour&age=${age}&date=${date}`)
+                const { body } = await request(app).get(`/prices?type=1jour&age=${age}&date=${date}`)
 
                 expect(body.cost).equal(expectedCost)
             });
